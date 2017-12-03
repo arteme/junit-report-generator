@@ -1,0 +1,34 @@
+## Test Summary
+
+Tests: {{ totals.tests }}\
+Failures: {{ totals.failures }}\
+Errors: {{ totals.errors }}\
+Skipped: {{ totals.skipped }}\
+Duration: {{ "%g" % totals.time }} seconds
+
+|*Class*|*Tests*|*Failures*|*Errors*|*Skipped*|*Duration*|*Success rate*|
+| ----- |:-----:|:--------:|:------:|:-------:|:--------:|:------------:|
+{%- for name,class in per_class.items()|sort %}
+|{{ name }}|{{ class.tests }}|{{ class.failures }}|{{ class.errors }}|{{ class.skipped }}|{{ "%g" % class.time }}s|{{ "%.2f" % class.successes|percent(class.non_skipped) }}%|
+{%- endfor %}
+
+## Execution Records
+
+{% for name,class in per_class.items()|sort -%}
+
+### {{ name }}
+
+Tests: {{ class.tests }}\
+Failures: {{ class.failures }}\
+Errors: {{ class.errors }}\
+Skipped: {{ class.skipped }}\
+Duration: {{ "%g" % class.time }} seconds\
+Success: {{ "%.2f" % class.successes|percent(class.non_skipped) }}%
+
+|*Test*|*Duration*|*Result*|
+| ---- |:--------:|:------:|
+{%- for test in class %}
+|{{ test.name }}|{{ test.time }}s|{{ test.result|result }}|
+{%- endfor %}
+
+{% endfor %}
